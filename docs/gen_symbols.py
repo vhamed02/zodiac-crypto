@@ -6,10 +6,9 @@ GRAD = "url(#gold)"
 CELL = "#F4F5F8"
 
 COLS, ROWS = 10, 5
-CELL_W, CELL_H = 118, 116
-MARGIN_X, HEADER, FOOTER = 46, 108, 52
-W = MARGIN_X * 2 + COLS * CELL_W
-H = HEADER + ROWS * CELL_H + FOOTER
+CELL_W, CELL_H = 100, 100
+W = COLS * CELL_W
+H = ROWS * CELL_H
 
 NAMES = [
     "U+25CB", "U+25CF", "U+25B3", "U+25B2", "U+25BD", "U+25BC", "U+25A1", "U+25A0", "U+25C7", "U+25C6",
@@ -257,41 +256,21 @@ def build():
 <linearGradient id="gold" gradientUnits="userSpaceOnUse" x1="-30" y1="-30" x2="30" y2="30">
 <stop offset="0" stop-color="#3B4657"/><stop offset="0.55" stop-color="#212B3B"/><stop offset="1" stop-color="#0E1521"/>
 </linearGradient>
-<linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
-<stop offset="0" stop-color="#0E1521" stop-opacity="0"/><stop offset="0.5" stop-color="#0E1521" stop-opacity="0.35"/>
-<stop offset="1" stop-color="#0E1521" stop-opacity="0"/>
-</linearGradient>
 <clipPath id="clipCircle"><circle r="%.2f"/></clipPath>
 <clipPath id="clipLeft"><rect x="%.2f" y="%.2f" width="%.2f" height="%.2f"/></clipPath>
 </defs>""" % (R * 0.9, -R * 1.2, -R * 1.2, R * 1.2, R * 2.4))
 
     out.append('<rect width="%d" height="%d" fill="#FFFFFF"/>' % (W, H))
-    out.append('<rect x="10" y="10" width="%.1f" height="%.1f" rx="18" fill="#FFFFFF" '
-               'stroke="#D5D9E2" stroke-width="2"/>' % (W - 20, H - 20))
-
-    out.append('<text x="%d" y="52" fill="#0E1521" font-family="Georgia, \'Times New Roman\', serif" '
-               'font-size="26" letter-spacing="6">ZODIAC SYMBOL TABLE</text>' % MARGIN_X)
-    out.append('<text x="%d" y="76" fill="#6B7688" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
-               'font-size="13" letter-spacing="1.6">50 symbols · indices 0–49 · 32 drawn at random per key '
-               '· P(50,32) ≈ 4.9×10^47</text>' % MARGIN_X)
-    out.append('<rect x="%d" y="90" width="%d" height="1.5" fill="url(#rule)"/>' % (MARGIN_X, W - MARGIN_X * 2))
 
     for i in range(50):
         col, row = i % COLS, i // COLS
-        x = MARGIN_X + col * CELL_W
-        y = HEADER + row * CELL_H
-        out.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="16" fill="%s" '
+        x = col * CELL_W
+        y = row * CELL_H
+        out.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="14" fill="%s" '
                    'stroke="#E4E7EE" stroke-width="1.25"/>' % (x + 3, y + 3, CELL_W - 6, CELL_H - 6, CELL))
-        out.append('<text x="%.1f" y="%.1f" fill="#8A93A5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
-                   'font-size="11">%02d</text>' % (x + 14, y + 24, i))
-        out.append('<text x="%.1f" y="%.1f" fill="#B4BBC8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
-                   'font-size="8.5" text-anchor="end">%s</text>' % (x + CELL_W - 14, y + 24, NAMES[i]))
         out.append('<g transform="translate(%.1f,%.1f)">%s</g>' % (
-            x + CELL_W / 2, y + CELL_H / 2 + 8, "".join(sym(i))))
+            x + CELL_W / 2, y + CELL_H / 2, "".join(sym(i))))
 
-    out.append('<text x="%d" y="%d" fill="#8A93A5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
-               'font-size="11.5" letter-spacing="0.6">A recovery key is an ordered permutation of 32 of these 50 '
-               'symbols — order matters.</text>' % (MARGIN_X, H - 20))
     out.append("</svg>")
     return "\n".join(out)
 
