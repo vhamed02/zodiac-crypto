@@ -12,7 +12,7 @@ H = ROWS * CELL_H
 
 NAMES = [
     "U+25CB", "U+25CF", "U+25B3", "U+25B2", "U+25BD", "U+25BC", "U+25A1", "U+25A0", "U+03A9", "U+21AF",
-    "U+2606", "U+2605", "U+2726", "U+2727", "U+2729", "U+272A", "U+272B", "U+272C", "U+272D", "U+03A3",
+    "U+2606", "U+2605", "U+2726", "U+2727", "U+2729", "U+272A", "U+2205", "U+2208", "U+2643", "U+03A3",
     "U+272F", "U+2295", "U+2297", "U+2299", "U+2296", "U+2298", "U+229A", "U+229B", "U+229D", "U+229E",
     "U+229F", "U+22A0", "U+22A1", "U+2316", "U+2301", "U+2302", "U+2318", "U+2317", "U+25C8", "U+25C9",
     "U+25CC", "U+25CD", "U+25D0", "U+25D1", "U+25D2", "U+25D3", "U+2662", "U+2667", "U+2664", "U+2660",
@@ -158,14 +158,14 @@ def sym(i):
     if i == 15:
         return [circ(R * 0.98), poly(star_pts(5, R * 0.6, R * 0.25), sw=SW * 0.8)]
     if i == 16:
-        hole = star_pts(12, R * 0.3, R * 0.3)
-        return ['<path d="M %s Z M %s Z" fill="%s" fill-rule="evenodd"/>' % (
-            " L ".join("%.2f,%.2f" % p for p in star_pts(5, R, R * 0.42)),
-            " L ".join("%.2f,%.2f" % p for p in hole), GRAD)]
+        return ['<ellipse rx="17" ry="23.5" fill="none" stroke="%s" stroke-width="%.2f"/>' % (GRAD, SW * 1.05),
+                line(-20, 21, 20, -21, sw=SW * 1.05)]
     if i == 17:
-        return [poly(star_pts(5, R * 0.98, R * 0.42), sw=SW * 0.85), disc(R * 0.3)]
+        return [path("M 15,-21 C -3,-21 -16,-12 -16,0 C -16,12 -3,21 15,21", sw=SW * 1.05),
+                line(-12.5, 0, 13, 0, sw=SW * 1.05)]
     if i == 18:
-        return [poly(star_pts(5, R, R * 0.42), sw=SW * 0.85), polyf(star_pts(5, R * 0.7, R * 0.29))]
+        return [path("M 7,23 L 7,-11 C 7,-23 -3,-27 -11,-22 C -18,-17 -18,-7 -11,-3", sw=SW * 1.05),
+                line(-9, 11, 21, 11, sw=SW * 1.05)]
     if i == 19:
         return [path("M 19,-24 L -19,-24 L 2.5,0 L -19,24 L 19,24", sw=SW * 1.05)]
     if i == 20:

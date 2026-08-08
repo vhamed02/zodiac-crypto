@@ -25,7 +25,7 @@ This exact table must be used in the code (order matters — do not change it):
 
 ```
  0 ○   1 ●   2 △   3 ▲   4 ▽   5 ▼   6 □   7 ■   8 Ω   9 ↯
-10 ☆  11 ★  12 ✦  13 ✧  14 ✩  15 ✪  16 ✫  17 ✬  18 ✭  19 Σ
+10 ☆  11 ★  12 ✦  13 ✧  14 ✩  15 ✪  16 ∅  17 ∈  18 ♃  19 Σ
 20 ✯  21 ⊕  22 ⊗  23 ⊙  24 ⊖  25 ⊘  26 ⊚  27 ⊛  28 ⊝  29 ⊞
 30 ⊟  31 ⊠  32 ⊡  33 ⌖  34 ⌁  35 ⌂  36 ⌘  37 ⌗  38 ◈  39 ◉
 40 ◌  41 ◍  42 ◐  43 ◑  44 ◒  45 ◓  46 ♢  47 ♧  48 ♤  49 ♠
@@ -36,7 +36,7 @@ source, not by pasting raw characters, to avoid copy-paste corruption):
 
 ```
 U+25CB U+25CF U+25B3 U+25B2 U+25BD U+25BC U+25A1 U+25A0 U+03A9 U+21AF
-U+2606 U+2605 U+2726 U+2727 U+2729 U+272A U+272B U+272C U+272D U+03A3
+U+2606 U+2605 U+2726 U+2727 U+2729 U+272A U+2205 U+2208 U+2643 U+03A3
 U+272F U+2295 U+2297 U+2299 U+2296 U+2298 U+229A U+229B U+229D U+229E
 U+229F U+22A0 U+22A1 U+2316 U+2301 U+2302 U+2318 U+2317 U+25C8 U+25C9
 U+25CC U+25CD U+25D0 U+25D1 U+25D2 U+25D3 U+2662 U+2667 U+2664 U+2660
