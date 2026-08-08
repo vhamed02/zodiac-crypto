@@ -11,8 +11,8 @@ W = COLS * CELL_W
 H = ROWS * CELL_H
 
 NAMES = [
-    "U+25CB", "U+25CF", "U+25B3", "U+25B2", "U+25BD", "U+25BC", "U+25A1", "U+25A0", "U+25C7", "U+25C6",
-    "U+2606", "U+2605", "U+2726", "U+2727", "U+2729", "U+272A", "U+272B", "U+272C", "U+272D", "U+272E",
+    "U+25CB", "U+25CF", "U+25B3", "U+25B2", "U+25BD", "U+25BC", "U+25A1", "U+25A0", "U+03A9", "U+21AF",
+    "U+2606", "U+2605", "U+2726", "U+2727", "U+2729", "U+272A", "U+272B", "U+272C", "U+272D", "U+03A3",
     "U+272F", "U+2295", "U+2297", "U+2299", "U+2296", "U+2298", "U+229A", "U+229B", "U+229D", "U+229E",
     "U+229F", "U+22A0", "U+22A1", "U+2316", "U+2301", "U+2302", "U+2318", "U+2317", "U+25C8", "U+25C9",
     "U+25CC", "U+25CD", "U+25D0", "U+25D1", "U+25D2", "U+25D3", "U+2662", "U+2667", "U+2664", "U+2660",
@@ -140,9 +140,11 @@ def sym(i):
     if i == 7:
         return [polyf(sq_pts(R * 0.82))]
     if i == 8:
-        return [poly(dia_pts(R * 0.88, R * 0.98))]
+        return [path("M -18,25 L -6.5,25 C -17.5,18.5 -21.5,8 -21.5,-1.5 C -21.5,-15 -12,-25 0,-25 "
+                     "C 12,-25 21.5,-15 21.5,-1.5 C 21.5,8 17.5,18.5 6.5,25 L 18,25", sw=SW * 1.05)]
     if i == 9:
-        return [polyf(dia_pts(R * 0.88, R * 0.98))]
+        return [path("M 9,-26 L -11,-5 L 5,-5 L -6,18", sw=SW * 1.15),
+                path("M -16,7 L -6,18 L 5,13", sw=SW * 1.15)]
     if i == 10:
         return [poly(star_pts(5, R, R * 0.42))]
     if i == 11:
@@ -165,7 +167,7 @@ def sym(i):
     if i == 18:
         return [poly(star_pts(5, R, R * 0.42), sw=SW * 0.85), polyf(star_pts(5, R * 0.7, R * 0.29))]
     if i == 19:
-        return [poly(star_pts(5, R, R * 0.42), sw=SW * 1.5), polyf(star_pts(5, R * 0.6, R * 0.25))]
+        return [path("M 19,-24 L -19,-24 L 2.5,0 L -19,24 L 19,24", sw=SW * 1.05)]
     if i == 20:
         return ['<g clip-path="url(#clipLeft)">%s</g>' % polyf(star_pts(5, R, R * 0.42)),
                 poly(star_pts(5, R, R * 0.42), sw=SW * 0.9)]
