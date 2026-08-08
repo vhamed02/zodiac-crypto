@@ -193,7 +193,23 @@ func TestCLIDecryptCorruptCiphertext(t *testing.T) {
 	}
 }
 
-func TestPrompterPrefersStdinWhenPiped(t *testing.T) {
+func TestCLIDecryptWithSymbolsFlag(t *testing.T) {
+	const plaintext = "symbols flag payload"
+	const passphrase = "cli-passphrase"
+
+	ciphertext, symbolLine := encryptViaCLI(t, plaintext, passphrase)
+
+	s, out, _ := newStreams(ciphertext + "\n" + passphrase + "\n")
+	args := []string{"decrypt", "--symbols", symbolLine, "--passphrase-stdin"}
+	if err := run(args, s, &scriptedPrompter{}); err != nil {
+		t.Fatalf("decrypt returned an unexpected error: %v", err)
+	}
+	if out.String() != plaintext {
+		t.Fatalf("expected plaintext %q, got %q", plaintext, out.String())
+	}
+}
+
+func TestPrompterFallsBackToStdinWithoutTerminal(t *testing.T) {
 	piped, err := os.CreateTemp(t.TempDir(), "stdin")
 	if err != nil {
 		t.Fatalf("CreateTemp returned an unexpected error: %v", err)
@@ -204,8 +220,11 @@ func TestPrompterPrefersStdinWhenPiped(t *testing.T) {
 	p, closePrompter := newPrompter(s, piped)
 	defer closePrompter()
 
+	if _, isTTY := p.(*ttyPrompter); isTTY {
+		return
+	}
 	if _, ok := p.(*readerPrompter); !ok {
-		t.Fatalf("expected a stdin prompter when stdin is not a terminal, got %T", p)
+		t.Fatalf("expected a stdin prompter without a terminal, got %T", p)
 	}
 }
 

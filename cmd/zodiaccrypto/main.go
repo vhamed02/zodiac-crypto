@@ -17,15 +17,16 @@ const usage = `zodiaccrypto - symbol-key authenticated encryption
 
 Usage:
   zodiaccrypto encrypt [--passphrase-stdin]
-  zodiaccrypto decrypt [--input <ciphertext>] [--passphrase-stdin]
+  zodiaccrypto decrypt [--input <ciphertext>] [--symbols <key>] [--passphrase-stdin]
 
 encrypt reads the plaintext from stdin and prints the ciphertext together with
 the randomly generated 32-symbol recovery key.
 
 decrypt reads the ciphertext from --input or from the first line of stdin, then
-asks for the symbol key and the passphrase.
+asks for the symbol key and the passphrase on the terminal. Use --symbols and
+--passphrase-stdin to supply them without prompting.
 
-When no terminal is available, prompts are read from stdin in this order:
+When no terminal is available, prompts fall back to stdin in this order:
   encrypt: passphrase (only with --passphrase-stdin), then plaintext
   decrypt: ciphertext (unless --input), symbol key, passphrase
 `
@@ -80,18 +81,16 @@ func (p *readerPrompter) Password(prompt string) (string, error) {
 }
 
 func newPrompter(s *streams, stdin *os.File) (prompter, func()) {
-	if stdin == nil || !term.IsTerminal(int(stdin.Fd())) {
-		return &readerPrompter{reader: s.in, notice: s.err}, func() {}
-	}
-	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
-	if err != nil {
-		return &readerPrompter{reader: s.in, notice: s.err}, func() {}
-	}
-	if !term.IsTerminal(int(tty.Fd())) {
+	if tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0); err == nil {
+		if term.IsTerminal(int(tty.Fd())) {
+			return &ttyPrompter{tty: tty, reader: bufio.NewReader(tty)}, func() { tty.Close() }
+		}
 		tty.Close()
-		return &readerPrompter{reader: s.in, notice: s.err}, func() {}
 	}
-	return &ttyPrompter{tty: tty, reader: bufio.NewReader(tty)}, func() { tty.Close() }
+	if stdin != nil && term.IsTerminal(int(stdin.Fd())) {
+		return &ttyPrompter{tty: stdin, reader: s.in}, func() {}
+	}
+	return &readerPrompter{reader: s.in, notice: s.err}, func() {}
 }
 
 func readLine(reader *bufio.Reader) (string, error) {
@@ -184,6 +183,7 @@ func runDecrypt(args []string, s *streams, p prompter) error {
 	flags := flag.NewFlagSet("decrypt", flag.ContinueOnError)
 	flags.SetOutput(s.err)
 	input := flags.String("input", "", "ciphertext to decrypt; read from stdin when empty")
+	symbolFlag := flags.String("symbols", "", "32-symbol recovery key; prompted for when empty")
 	passphraseStdin := flags.Bool("passphrase-stdin", false, "read the passphrase from stdin instead of prompting")
 	if err := flags.Parse(args); err != nil {
 		return err
@@ -201,9 +201,13 @@ func runDecrypt(args []string, s *streams, p prompter) error {
 		return errors.New("no ciphertext given")
 	}
 
-	symbolLine, err := p.Line("Symbol key (32 symbols, space separated): ")
-	if err != nil {
-		return fmt.Errorf("reading symbol key: %w", err)
+	symbolLine := *symbolFlag
+	if strings.TrimSpace(symbolLine) == "" {
+		line, err := p.Line("Symbol key (32 symbols, space separated): ")
+		if err != nil {
+			return fmt.Errorf("reading symbol key: %w", err)
+		}
+		symbolLine = line
 	}
 	symbols, err := zodiaccrypto.ParseSymbols(symbolLine)
 	if err != nil {

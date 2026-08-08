@@ -95,7 +95,7 @@ go build -o zodiaccrypto ./cmd/zodiaccrypto
 
 ```
 zodiaccrypto encrypt [--passphrase-stdin]
-zodiaccrypto decrypt [--input <ciphertext>] [--passphrase-stdin]
+zodiaccrypto decrypt [--input <ciphertext>] [--symbols <key>] [--passphrase-stdin]
 ```
 
 ### Encrypt
@@ -127,20 +127,33 @@ Passphrase:
 attack at dawn
 ```
 
-Without `--input`, the ciphertext is read from the first line of stdin. The
-symbol key may be pasted with any whitespace irregularities. Failures print a
-single user-facing message (`ErrAuthFailed`, `ErrInvalidSymbols`, or
+Without `--input`, the ciphertext is read from the first line of stdin, so
+piping the payload still leaves the symbol key and passphrase to be entered on
+the terminal:
+
+```
+$ printf 'zc1:0mUS3vP6dQ...\n' | ./zodiaccrypto decrypt
+Symbol key (32 symbols, space separated): ★ ◐ ⌘ ○ ♠ ⊗ ✧ ◉ …
+Passphrase:
+attack at dawn
+```
+
+The symbol key may be pasted with any whitespace irregularities. Pass
+`--symbols` and `--passphrase-stdin` to skip the prompts entirely. Failures
+print a single user-facing message (`ErrAuthFailed`, `ErrInvalidSymbols`, or
 `ErrCorruptData`) and exit with a non-zero status.
 
 ### Non-interactive use
 
-When no terminal is available, prompts fall back to stdin in this order:
+Prompts are read from the terminal (`/dev/tty`) even when stdin is a pipe.
+When no terminal is available, they fall back to stdin in this order:
 
 - `encrypt`: passphrase (only with `--passphrase-stdin`), then the plaintext
 - `decrypt`: ciphertext (unless `--input`), symbol key, passphrase
 
 ```
 printf 'my-passphrase\nattack at dawn' | ./zodiaccrypto encrypt --passphrase-stdin
+./zodiaccrypto decrypt --input 'zc1:…' --symbols '★ ◐ ⌘ …' --passphrase-stdin <<< 'my-passphrase'
 ```
 
 ## Development
