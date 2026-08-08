@@ -7,7 +7,7 @@ CELL = "#F4F5F8"
 
 COLS, ROWS = 10, 5
 CELL_W, CELL_H = 118, 116
-MARGIN_X, HEADER, FOOTER = 44, 104, 46
+MARGIN_X, HEADER, FOOTER = 46, 108, 52
 W = MARGIN_X * 2 + COLS * CELL_W
 H = HEADER + ROWS * CELL_H + FOOTER
 
@@ -265,9 +265,9 @@ def build():
 <clipPath id="clipLeft"><rect x="%.2f" y="%.2f" width="%.2f" height="%.2f"/></clipPath>
 </defs>""" % (R * 0.9, -R * 1.2, -R * 1.2, R * 1.2, R * 2.4))
 
-    out.append('<rect width="%d" height="%d" rx="22" fill="#FFFFFF"/>' % (W, H))
-    out.append('<rect x="1" y="1" width="%.1f" height="%.1f" rx="21" fill="none" '
-               'stroke="#D5D9E2" stroke-width="2"/>' % (W - 2, H - 2))
+    out.append('<rect width="%d" height="%d" fill="#FFFFFF"/>' % (W, H))
+    out.append('<rect x="10" y="10" width="%.1f" height="%.1f" rx="18" fill="#FFFFFF" '
+               'stroke="#D5D9E2" stroke-width="2"/>' % (W - 20, H - 20))
 
     out.append('<text x="%d" y="52" fill="#0E1521" font-family="Georgia, \'Times New Roman\', serif" '
                'font-size="26" letter-spacing="6">ZODIAC SYMBOL TABLE</text>' % MARGIN_X)
