@@ -3,7 +3,7 @@ import math
 R = 27.0
 SW = 3.0
 GRAD = "url(#gold)"
-CELL = "#121A2C"
+CELL = "#F4F5F8"
 
 COLS, ROWS = 10, 5
 CELL_W, CELL_H = 118, 116
@@ -255,26 +255,23 @@ def build():
                'role="img" aria-label="The 50 zodiac-crypto symbols">' % (W, H, W, H))
     out.append("""<defs>
 <linearGradient id="gold" gradientUnits="userSpaceOnUse" x1="-30" y1="-30" x2="30" y2="30">
-<stop offset="0" stop-color="#FFE7B0"/><stop offset="0.55" stop-color="#F3C475"/><stop offset="1" stop-color="#D99A45"/>
-</linearGradient>
-<linearGradient id="bg" x1="0" y1="0" x2="0.6" y2="1">
-<stop offset="0" stop-color="#0A0F1E"/><stop offset="1" stop-color="#141C33"/>
+<stop offset="0" stop-color="#3B4657"/><stop offset="0.55" stop-color="#212B3B"/><stop offset="1" stop-color="#0E1521"/>
 </linearGradient>
 <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
-<stop offset="0" stop-color="#F3C475" stop-opacity="0"/><stop offset="0.5" stop-color="#F3C475" stop-opacity="0.55"/>
-<stop offset="1" stop-color="#F3C475" stop-opacity="0"/>
+<stop offset="0" stop-color="#0E1521" stop-opacity="0"/><stop offset="0.5" stop-color="#0E1521" stop-opacity="0.35"/>
+<stop offset="1" stop-color="#0E1521" stop-opacity="0"/>
 </linearGradient>
 <clipPath id="clipCircle"><circle r="%.2f"/></clipPath>
 <clipPath id="clipLeft"><rect x="%.2f" y="%.2f" width="%.2f" height="%.2f"/></clipPath>
 </defs>""" % (R * 0.9, -R * 1.2, -R * 1.2, R * 1.2, R * 2.4))
 
-    out.append('<rect width="%d" height="%d" rx="26" fill="url(#bg)"/>' % (W, H))
-    out.append('<rect x="0.75" y="0.75" width="%.1f" height="%.1f" rx="25.5" fill="none" '
-               'stroke="#F3C475" stroke-opacity="0.18" stroke-width="1.5"/>' % (W - 1.5, H - 1.5))
+    out.append('<rect width="%d" height="%d" rx="22" fill="#FFFFFF"/>' % (W, H))
+    out.append('<rect x="1" y="1" width="%.1f" height="%.1f" rx="21" fill="none" '
+               'stroke="#D5D9E2" stroke-width="2"/>' % (W - 2, H - 2))
 
-    out.append('<text x="%d" y="52" fill="#F6E4C0" font-family="Georgia, \'Times New Roman\', serif" '
+    out.append('<text x="%d" y="52" fill="#0E1521" font-family="Georgia, \'Times New Roman\', serif" '
                'font-size="26" letter-spacing="6">ZODIAC SYMBOL TABLE</text>' % MARGIN_X)
-    out.append('<text x="%d" y="76" fill="#7C8AAB" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
+    out.append('<text x="%d" y="76" fill="#6B7688" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
                'font-size="13" letter-spacing="1.6">50 symbols · indices 0–49 · 32 drawn at random per key '
                '· P(50,32) ≈ 4.9×10^47</text>' % MARGIN_X)
     out.append('<rect x="%d" y="90" width="%d" height="1.5" fill="url(#rule)"/>' % (MARGIN_X, W - MARGIN_X * 2))
@@ -284,15 +281,15 @@ def build():
         x = MARGIN_X + col * CELL_W
         y = HEADER + row * CELL_H
         out.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" rx="16" fill="%s" '
-                   'stroke="#FFFFFF" stroke-opacity="0.07"/>' % (x + 3, y + 3, CELL_W - 6, CELL_H - 6, CELL))
-        out.append('<text x="%.1f" y="%.1f" fill="#5D6C8C" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
+                   'stroke="#E4E7EE" stroke-width="1.25"/>' % (x + 3, y + 3, CELL_W - 6, CELL_H - 6, CELL))
+        out.append('<text x="%.1f" y="%.1f" fill="#8A93A5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
                    'font-size="11">%02d</text>' % (x + 14, y + 24, i))
-        out.append('<text x="%.1f" y="%.1f" fill="#3F4C68" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
+        out.append('<text x="%.1f" y="%.1f" fill="#B4BBC8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
                    'font-size="8.5" text-anchor="end">%s</text>' % (x + CELL_W - 14, y + 24, NAMES[i]))
         out.append('<g transform="translate(%.1f,%.1f)">%s</g>' % (
             x + CELL_W / 2, y + CELL_H / 2 + 8, "".join(sym(i))))
 
-    out.append('<text x="%d" y="%d" fill="#5D6C8C" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
+    out.append('<text x="%d" y="%d" fill="#8A93A5" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" '
                'font-size="11.5" letter-spacing="0.6">A recovery key is an ordered permutation of 32 of these 50 '
                'symbols — order matters.</text>' % (MARGIN_X, H - 20))
     out.append("</svg>")
