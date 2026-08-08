@@ -20,12 +20,12 @@ is a permutation, not a set.
 ## The 50 symbols
 
 <p align="center">
-  <img src="docs/symbols.svg" alt="The 50 zodiac-crypto symbols, drawn as vector artwork" width="100%">
+  <img src="docs/symbol-grid.svg" alt="The 50 zodiac-crypto symbols, drawn as vector artwork" width="100%">
 </p>
 
 The table is fixed and order-sensitive: index 0 is `U+25CB`, index 49 is
 `U+2660`. The artwork above is drawn as vector geometry
-(`docs/gen_symbols.py` → `docs/symbols.svg`), so it renders identically
+(`docs/gen_symbols.py` → `docs/symbol-grid.svg`), so it renders identically
 everywhere regardless of which fonts are installed.
 
 ## Design

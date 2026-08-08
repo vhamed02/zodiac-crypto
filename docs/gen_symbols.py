@@ -275,6 +275,6 @@ def build():
     return "\n".join(out)
 
 
-with open("docs/symbols.svg", "w", encoding="utf-8") as fh:
+with open("docs/symbol-grid.svg", "w", encoding="utf-8") as fh:
     fh.write(build())
 print("written")
