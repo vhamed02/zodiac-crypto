@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
+	"os"
 	"strings"
 	"testing"
 
@@ -189,6 +190,22 @@ func TestCLIDecryptCorruptCiphertext(t *testing.T) {
 	err := run([]string{"decrypt"}, s, prompter)
 	if !errors.Is(err, zodiaccrypto.ErrCorruptData) {
 		t.Fatalf("expected ErrCorruptData, got %v", err)
+	}
+}
+
+func TestPrompterPrefersStdinWhenPiped(t *testing.T) {
+	piped, err := os.CreateTemp(t.TempDir(), "stdin")
+	if err != nil {
+		t.Fatalf("CreateTemp returned an unexpected error: %v", err)
+	}
+	defer piped.Close()
+
+	s, _, _ := newStreams("")
+	p, closePrompter := newPrompter(s, piped)
+	defer closePrompter()
+
+	if _, ok := p.(*readerPrompter); !ok {
+		t.Fatalf("expected a stdin prompter when stdin is not a terminal, got %T", p)
 	}
 }
 

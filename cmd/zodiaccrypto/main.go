@@ -79,7 +79,10 @@ func (p *readerPrompter) Password(prompt string) (string, error) {
 	return p.Line(prompt)
 }
 
-func newPrompter(s *streams) (prompter, func()) {
+func newPrompter(s *streams, stdin *os.File) (prompter, func()) {
+	if stdin == nil || !term.IsTerminal(int(stdin.Fd())) {
+		return &readerPrompter{reader: s.in, notice: s.err}, func() {}
+	}
 	tty, err := os.OpenFile("/dev/tty", os.O_RDWR, 0)
 	if err != nil {
 		return &readerPrompter{reader: s.in, notice: s.err}, func() {}
@@ -104,7 +107,7 @@ func readLine(reader *bufio.Reader) (string, error) {
 
 func main() {
 	s := &streams{in: bufio.NewReader(os.Stdin), out: os.Stdout, err: os.Stderr}
-	p, closePrompter := newPrompter(s)
+	p, closePrompter := newPrompter(s, os.Stdin)
 	defer closePrompter()
 
 	if err := run(os.Args[1:], s, p); err != nil {
